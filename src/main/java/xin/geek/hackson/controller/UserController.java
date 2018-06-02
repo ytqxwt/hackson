@@ -5,18 +5,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import xin.geek.hackson.enity.Family;
 import xin.geek.hackson.enity.User;
 import xin.geek.hackson.repos.UserRepos;
+import xin.geek.hackson.util.DateUtil;
+
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
     private final UserRepos userRepos;
+    private final DateUtil dateUtil;
 
     @Autowired
-    public UserController(UserRepos userRepos) {
+    public UserController(UserRepos userRepos, DateUtil dateUtil) {
         this.userRepos = userRepos;
+        this.dateUtil = dateUtil;
     }
 
     @RequestMapping(value = "findById", produces = {"application/json;charset=UTF-8"})
@@ -33,8 +37,21 @@ public class UserController {
                            @RequestParam(value = "birthday", required = false) String birthday,
                            @RequestParam(value = "familyId", required = false) String familyId,
                            @RequestParam(value = "city", required = false) String city
-    ) {
+    ) throws ParseException {
+
         User u = new User(openId, role, familyId);
+        if (birthday != null) {
+            u.setBirthday(DateUtil.stringToDate(birthday));
+        }
+        if (name != null) {
+            u.setName(name);
+        }
+        if (familyId != null) {
+            u.setFamilyId(familyId);
+        }
+        if (city != null) {
+            u.setCity(city);
+        }
         userRepos.save(u);
         return "true";
     }
