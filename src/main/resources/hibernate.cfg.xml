@@ -6,9 +6,10 @@
   <session-factory>
     <property name="connection.url">jdbc:mysql://120.79.68.208:3306/hackson</property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-    <mapping class="xin.geek.hackson.enity.Family"/>
+      <mapping class="xin.geek.hackson.enity.Family"/>
     <mapping class="xin.geek.hackson.enity.User"/>
-    <!-- <property name="connection.username"/> -->
+      <mapping class="xin.geek.hackson.enity.Weather"/>
+      <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 
     <!-- DB schema will be updated if needed -->

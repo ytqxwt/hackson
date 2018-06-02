@@ -80,5 +80,4 @@ public class UserController {
         userRepos.deleteById(openId);
         return "true";
     }
-
 }
