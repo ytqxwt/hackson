@@ -10,6 +10,7 @@ import xin.geek.hackson.repos.UserRepos;
 import xin.geek.hackson.util.DateUtil;
 
 import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -21,6 +22,23 @@ public class UserController {
     public UserController(UserRepos userRepos, DateUtil dateUtil) {
         this.userRepos = userRepos;
         this.dateUtil = dateUtil;
+    }
+
+    /*
+     * 获得有city的user json
+     * */
+    @RequestMapping(value = "getFamilyCity", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public List<User> getFamilyCity(@RequestParam("id") String cId
+    ) {
+        return userRepos.getByFamilyIdAndCityIsNotNull(cId);
+    }
+
+    @RequestMapping(value = "isFirst", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public Boolean isFirst(@RequestParam("openId") String openId
+    ) {
+        return userRepos.findById(openId).isPresent();
     }
 
     @RequestMapping(value = "findById", produces = {"application/json;charset=UTF-8"})
@@ -38,7 +56,7 @@ public class UserController {
                            @RequestParam(value = "familyId", required = false) String familyId,
                            @RequestParam(value = "city", required = false) String city
     ) throws ParseException {
-
+        //familyId默认为第一个人的openId
         User u = new User(openId, role, familyId);
         if (birthday != null) {
             u.setBirthday(DateUtil.stringToDate(birthday));

@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 public class Family {
-    private int id;
+    private String id;
     private String name;
     private String count;
 
@@ -21,12 +21,12 @@ public class Family {
     }
 
     @Id
-    @Column(name = "id", nullable = false)
-    public int getId() {
+    @Column(name = "id", nullable = false, length = 45)
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
