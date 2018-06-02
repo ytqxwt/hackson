@@ -3,10 +3,10 @@ server:
 spring:
   datasource:
     username: root
-    data-password: dyz13125219151YT
+    data-password:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://120.79.68.208:3306/fi?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://120.79.68.208:3306/hackson?useUnicode=true&characterEncoding=utf-8&useSSL=false
     initialSize: 5
     minIdle: 5
     maxActive: 20
@@ -26,3 +26,20 @@ spring:
      encoding: UTF-8
      cache: false
      suffix: .html
+  servlet:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 200Mb
+  http:
+   encoding:
+     force: true
+     charset: UTF-8
+  redis:
+    host: 120.79.68.208
+    port: 6379
+    password: dyz13125219151YT
+    jedis:
+      pool:
+        max-active: 100
+        min-idle: 0
+        max-idle: 8
