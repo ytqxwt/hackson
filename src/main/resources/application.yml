@@ -1,0 +1,28 @@
+server:
+  port: 8443
+spring:
+  datasource:
+    username: root
+    data-password: dyz13125219151YT
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://120.79.68.208:3306/fi?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+  jpa:
+      database: mysql
+      show-sql: true
+      hibernate:
+        ddl-auto: none
+      generate-ddl: true
+      database-platform: org.hibernate.dialect.MySQL5Dialect
+      open-in-view: true
+  thymeleaf:
+     mode: HTML5
+     encoding: UTF-8
+     cache: false
+     suffix: .html
