@@ -24,14 +24,11 @@ public class UserController {
         this.dateUtil = dateUtil;
     }
 
-    /*
-     * 获得有city的user json
-     * */
-    @RequestMapping(value = "getFamilyCity", produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "getFamilyMember", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public List<User> getFamilyCity(@RequestParam("id") String cId
+    public List<User> getFamilyMember(@RequestParam("familyId") String familyId
     ) {
-        return userRepos.getByFamilyIdAndCityIsNotNull(cId);
+        return userRepos.findByFamilyId(familyId);
     }
 
     @RequestMapping(value = "isFirst", produces = {"application/json;charset=UTF-8"})

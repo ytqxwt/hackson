@@ -6,7 +6,6 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
-import io.socket.client.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,12 @@ public class MessageEventHandler {
     @OnConnect
     public void onConnect(SocketIOClient client) {
         if (client != null) {
-            logger.info("连接成功");
+            String openId = client.getHandshakeData().getSingleUrlParam("openId");
+            logger.info(openId + "已加入");
+            String familyRoom = client.getHandshakeData().getSingleUrlParam("familyId");
+            client.joinRoom(familyRoom);
+            logger.info(openId + "加入家庭群聊" + familyRoom);
+            client.joinRoom("bigRoom");
         } else {
             System.out.println("客户端为空");
         }
@@ -36,27 +40,34 @@ public class MessageEventHandler {
     //添加@OnDisconnect事件，客户端断开连接时调用，刷新客户端信息
     @OnDisconnect
     public void onDisconnect(SocketIOClient client) {
-        logger.info("客户端断开连接");
+        String openId = client.getHandshakeData().getSingleUrlParam("openId");
+        logger.info(openId + "客户端断开连接");
         client.disconnect();
     }
 
-    @OnEvent("send")
+    @OnEvent("sendTo")
     public void send(SocketIOClient client, AckRequest ackRequest, Object data) {
-       // client.joinRoom(client.getHandshakeData().getSingleUrlParam("userId"));
-        logger.info("接到消息" + data);
+        String familyRoom = client.getHandshakeData().getSingleUrlParam("familyId");
+        for (SocketIOClient client1 : server.getRoomOperations(familyRoom).getClients()) {
+            if (client1.getHandshakeData().getSingleUrlParam("openId").equals(client.getHandshakeData().getSingleUrlParam("toOpenId"))) {
+                client1.sendEvent("getFrom", data);
+            }
+        }
         if (ackRequest.isAckRequested()) {
-            ackRequest.sendAckData("test1", "test2");
+            ackRequest.sendAckData(true);
         }
     }
-    //消息接收入口
-    @OnEvent(value = Socket.EVENT_MESSAGE)
-    public void onEvent(SocketIOClient client, AckRequest ackRequest, Object data) {
-        client.joinRoom("room");
-        logger.info("接收到客户端消息");
-        logger.info("" + data);
+
+    @OnEvent("sendToFamily")
+    public void sendToFamily(SocketIOClient client, AckRequest ackRequest, Object data) {
+        String familyRoom = client.getHandshakeData().getSingleUrlParam("familyId");
+        for (SocketIOClient client1 : server.getRoomOperations(familyRoom).getClients()) {
+            if (client1.getHandshakeData().getSingleUrlParam("openId").equals(client.getHandshakeData().getSingleUrlParam("toOpenId"))) {
+                client1.sendEvent("getFrom", data);
+            }
+        }
         if (ackRequest.isAckRequested()) {
-            // send ack response with data to client
-            ackRequest.sendAckData("服务器回答Socket.EVENT_MESSAGE", "好的");
+            ackRequest.sendAckData("true");
         }
     }
 
@@ -64,7 +75,7 @@ public class MessageEventHandler {
     @OnEvent(value = "broadcast")
     public void onBroadcast(SocketIOClient client, AckRequest ackRequest, Object data) {
         logger.info("接收到广播消息");
-        String room = "room";
+        String room = "bigRoom";
         server.getRoomOperations(room).sendEvent("broadcast", "广播啦啦啦啦");
     }
 }

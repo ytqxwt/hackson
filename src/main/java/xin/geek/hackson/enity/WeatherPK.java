@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class WeatherPK implements Serializable {
     private String openid;
-    private String toRole;
+    private String torole;
 
     @Column(name = "openid", nullable = false, length = 45)
     @Id
@@ -19,14 +19,14 @@ public class WeatherPK implements Serializable {
         this.openid = openid;
     }
 
-    @Column(name = "toRole", nullable = false, length = 45)
+    @Column(name = "torole", nullable = false, length = 45)
     @Id
-    public String getToRole() {
-        return toRole;
+    public String getTorole() {
+        return torole;
     }
 
-    public void setToRole(String toRole) {
-        this.toRole = toRole;
+    public void setTorole(String torole) {
+        this.torole = torole;
     }
 
     @Override
@@ -35,12 +35,12 @@ public class WeatherPK implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         WeatherPK weatherPK = (WeatherPK) o;
         return Objects.equals(openid, weatherPK.openid) &&
-                Objects.equals(toRole, weatherPK.toRole);
+                Objects.equals(torole, weatherPK.torole);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(openid, toRole);
+        return Objects.hash(openid, torole);
     }
 }

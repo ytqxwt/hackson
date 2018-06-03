@@ -7,8 +7,19 @@ import java.util.Objects;
 @IdClass(WeatherPK.class)
 public class Weather {
     private String openid;
-    private String toRole;
+    private String torole;
     private String city;
+    @Id
+    @Column(name = "weather", nullable = false, length = 45)
+    public String getWeather() {
+        return weather;
+    }
+
+    public void setWeather(String weather) {
+        this.weather = weather;
+    }
+
+    private String weather;
 
     @Id
     @Column(name = "openid", nullable = false, length = 45)
@@ -21,13 +32,13 @@ public class Weather {
     }
 
     @Id
-    @Column(name = "toRole", nullable = false, length = 45)
-    public String getToRole() {
-        return toRole;
+    @Column(name = "torole", nullable = false, length = 45)
+    public String getTorole() {
+        return torole;
     }
 
-    public void setToRole(String toRole) {
-        this.toRole = toRole;
+    public void setTorole(String torole) {
+        this.torole = torole;
     }
 
     @Basic
@@ -46,13 +57,13 @@ public class Weather {
         if (o == null || getClass() != o.getClass()) return false;
         Weather weather = (Weather) o;
         return Objects.equals(openid, weather.openid) &&
-                Objects.equals(toRole, weather.toRole) &&
+                Objects.equals(torole, weather.torole) &&
                 Objects.equals(city, weather.city);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(openid, toRole, city);
+        return Objects.hash(openid, torole, city);
     }
 }
