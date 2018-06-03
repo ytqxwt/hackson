@@ -32,6 +32,7 @@ public class MessageEventHandler {
             client.joinRoom(familyRoom);
             logger.info(openId + "加入家庭群聊" + familyRoom);
             client.joinRoom("bigRoom");
+            logger.info(openId + "加入系统群聊");
         } else {
             System.out.println("客户端为空");
         }
@@ -63,7 +64,7 @@ public class MessageEventHandler {
         String familyRoom = client.getHandshakeData().getSingleUrlParam("familyId");
         for (SocketIOClient client1 : server.getRoomOperations(familyRoom).getClients()) {
             if (client1.getHandshakeData().getSingleUrlParam("openId").equals(client.getHandshakeData().getSingleUrlParam("toOpenId"))) {
-                client1.sendEvent("getFrom", data);
+                client1.sendEvent("getFromFamily", data);
             }
         }
         if (ackRequest.isAckRequested()) {
@@ -74,8 +75,7 @@ public class MessageEventHandler {
     // 广播消息接收入口
     @OnEvent(value = "broadcast")
     public void onBroadcast(SocketIOClient client, AckRequest ackRequest, Object data) {
-        logger.info("接收到广播消息");
         String room = "bigRoom";
-        server.getRoomOperations(room).sendEvent("broadcast", "广播啦啦啦啦");
+        server.getRoomOperations(room).sendEvent("broadcast", data);
     }
 }
