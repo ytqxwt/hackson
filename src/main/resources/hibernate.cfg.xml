@@ -9,6 +9,7 @@
       <mapping class="xin.geek.hackson.enity.Family"/>
     <mapping class="xin.geek.hackson.enity.User"/>
       <mapping class="xin.geek.hackson.enity.Weather"/>
+      <mapping class="xin.geek.hackson.enity.Templet"/>
       <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 
